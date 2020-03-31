@@ -9,9 +9,9 @@ destination_path = r'{}\Pictures\MS_wallpapers'.format(user_profile)
 for _, _, files in walk(source_path):
     for file in files:
         source = f'{source_path}\{file}'
-        dest = f'{destination_path}\{file}.jpg'
-
+        
         if imghdr.what(source) == 'jpeg':
             file_stat = stat(source)
             if file_stat.st_size > 200_000:
+                dest = f'{destination_path}\{file}.jpg'
                 copyfile(source, dest)
