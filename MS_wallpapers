@@ -1,10 +1,15 @@
-from os import walk, stat, path
+from os import walk, stat, path, mkdir
 from shutil import copyfile
 import imghdr
+from PIL import Image
 
 user_profile = path.expandvars("%userprofile%")
 source_path = r'{}\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets'.format(user_profile)
-destination_path = r'{}\Pictures\MS_wallpapers'.format(user_profile)
+one_drive_path = f'{user_profile}\OneDrive\Obrazy'
+destination_path = f'{one_drive_path}\MS_wallpapers'
+
+if not path.isdir(destination_path):
+    mkdir(destination_path)
 
 for _, _, files in walk(source_path):
     for file in files:
@@ -13,5 +18,7 @@ for _, _, files in walk(source_path):
         if imghdr.what(source) == 'jpeg':
             file_stat = stat(source)
             if file_stat.st_size > 200_000:
+                im = Image.open(source)
                 dest = f'{destination_path}\{file}.jpg'
-                copyfile(source, dest)
+                if im.size[0]>im.size[1]:
+                    copyfile(source, dest)
