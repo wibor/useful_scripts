@@ -5,8 +5,9 @@ from PIL import Image
 
 user_profile = path.expandvars("%userprofile%")
 source_path = r'{}\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets'.format(user_profile)
-one_drive_path = f'{user_profile}\OneDrive\Obrazy'
-destination_path = f'{one_drive_path}\MS_wallpapers'
+destination_path = f'F:\MS_wallpapers'
+
+IDENT = ['jpeg', 'jpg', 'png', 'JPEG', 'JPG', 'PNG']
 
 if not path.isdir(destination_path):
     mkdir(destination_path)
@@ -15,7 +16,7 @@ for _, _, files in walk(source_path):
     for file in files:
         source = f'{source_path}\{file}'
         
-        if imghdr.what(source) == 'jpeg':
+        if imghdr.what(source) in IDENT:
             file_stat = stat(source)
             if file_stat.st_size > 200_000:
                 im = Image.open(source)
